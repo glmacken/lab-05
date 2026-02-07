@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements CityDialogFragmen
         docRef.delete()
                 .addOnSuccessListener(aVoid -> Log.d("DELETE", "City deleted from Firestore"))
                 .addOnFailureListener(e -> Log.e("DELETE", "Error deleting city", e));
+
+        docRef = citiesRef.document(city.getName());
         docRef.set(city);
     }
 
