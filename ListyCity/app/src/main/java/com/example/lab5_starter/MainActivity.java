@@ -87,11 +87,15 @@ public class MainActivity extends AppCompatActivity implements CityDialogFragmen
 
     @Override
     public void updateCity(City city, String title, String year) {
+        DocumentReference docRef = citiesRef.document(city.getName());
         city.setName(title);
         city.setProvince(year);
         cityArrayAdapter.notifyDataSetChanged();
 
-        // Updating the database using delete + addition
+        docRef.delete()
+                .addOnSuccessListener(aVoid -> Log.d("DELETE", "City deleted from Firestore"))
+                .addOnFailureListener(e -> Log.e("DELETE", "Error deleting city", e));
+        docRef.set(city);
     }
 
     @Override
@@ -112,6 +116,5 @@ public class MainActivity extends AppCompatActivity implements CityDialogFragmen
         docRef.delete()
                 .addOnSuccessListener(aVoid -> Log.d("DELETE", "City deleted from Firestore"))
                 .addOnFailureListener(e -> Log.e("DELETE", "Error deleting city", e));
-
     }
 }
